@@ -24,7 +24,7 @@ for filepath in glob.iglob(path):
 	print('Uploading ' + file)
 	s3.upload_file(Filename=filepath,
 					Bucket='mybucketpopx',
-					Key=file)
+					Key='Files/'+file)
 	
 
 	

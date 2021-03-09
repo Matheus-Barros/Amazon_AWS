@@ -17,7 +17,7 @@ s3 = boto3.client('s3',
 
 response = s3.list_objects(Bucket='mybucketpopx', #PASSING THE NAME OF THE BUCKET
 							MaxKeys=10, #MAX OF OBJECTS TO GET (OPTIONAL)
-							Prefix='table' #OBJECTS STARTING WITH (OPTIONAL)
+							#Prefix='File' #OBJECTS STARTING WITH (OPTIONAL)
 							)
 #PRINTING FILENAMES
 for file in response['Contents']:
