@@ -17,7 +17,7 @@ sns = boto3.client('sns',
 #GETTING TOPIC NAMES
 response = sns.list_topics()['Topics']
 for topicArn in response:
-
+	
 	#SUBCRIBE SMS
 	response = sns.subscribe(
 				TopicArn = topicArn['TopicArn'],
@@ -27,8 +27,7 @@ for topicArn in response:
 	#SUBCRIBE E-MAILS
 	'''
 	response = sns.subscribe(
-				TopicARn = topicArn['TopicArn'],
+				TopicArn = topicArn['TopicArn'],
 				Protocol='email',
-				Endpoint='xxxxxxx@xxxxx.com')
+				Endpoint='xxxx@xxxxx.com')
 	'''
-
