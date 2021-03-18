@@ -24,37 +24,33 @@ rekog = boto3.client('rekognition',
 
 #UPLOAD FILE
 '''
-s3.upload_file(Filename='dog.png',
+s3.upload_file(Filename='PlacaONU.jpg',
 				Bucket='mybucketpopx',
-				Key='Rekognition/dog.png')
+				Key='Rekognition/PlacaONU.jpg')
+
 '''
-
 #USING IMAGE FROM BUCKET AND USING REKOGNITION
-response = rekog.detect_labels(
+response = rekog.detect_text(
 	Image={'S3Object': {'Bucket': 'mybucketpopx',
-						'Name': 'Rekognition/dog.png'}},
-	MaxLabels=20,
-	MinConfidence=95
-	)
+						'Name': 'Rekognition/PlacaONU.jpg'}
+						}
+	)['TextDetections']
 
-response = response['Labels']
+placa = []
 
-df = pd.DataFrame(response)
+dict_Placas = {
+	'1075':'Gás liquefeito de petróleo (GLP)',
+	'1661':'Nitroanilina',
+	'1223':'Querosene',
+	'1294':'Tolueno' 
+	}
 
-numObjects = []
-count = 0
-
-#GETTING QUANTITY OF OBJECTS
 for i in response:
-	count = len(i['Instances'])
-	numObjects.append(count)
 
-	if count > 0:
-		print('Total of {} found: {}'.format(i['Name'],count))
-		continue
+	if i['Type'] == 'LINE':
+		placa.append(i['DetectedText'])
 
-	print(i['Name'] + ' found')
 
-df = df.assign(Total = numObjects)
-
-df.to_excel('Result.xlsx',index=False)
+result = dict_Placas.get(placa[1],'Not Found')
+if result != 'Not Found':
+	print('Material inflamável: ' + result)

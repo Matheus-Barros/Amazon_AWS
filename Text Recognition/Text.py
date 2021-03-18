@@ -24,37 +24,20 @@ rekog = boto3.client('rekognition',
 
 #UPLOAD FILE
 '''
-s3.upload_file(Filename='dog.png',
+s3.upload_file(Filename='Placa-Mercosul.jpg',
 				Bucket='mybucketpopx',
-				Key='Rekognition/dog.png')
+				Key='Rekognition/placa-carro.jpg')
+
 '''
-
 #USING IMAGE FROM BUCKET AND USING REKOGNITION
-response = rekog.detect_labels(
+response = rekog.detect_text(
 	Image={'S3Object': {'Bucket': 'mybucketpopx',
-						'Name': 'Rekognition/dog.png'}},
-	MaxLabels=20,
-	MinConfidence=95
-	)
+						'Name': 'Rekognition/placa-carro.jpg'}
+						}
+	)['TextDetections']
 
-response = response['Labels']
 
-df = pd.DataFrame(response)
-
-numObjects = []
-count = 0
-
-#GETTING QUANTITY OF OBJECTS
 for i in response:
-	count = len(i['Instances'])
-	numObjects.append(count)
 
-	if count > 0:
-		print('Total of {} found: {}'.format(i['Name'],count))
-		continue
-
-	print(i['Name'] + ' found')
-
-df = df.assign(Total = numObjects)
-
-df.to_excel('Result.xlsx',index=False)
+	if i['Type'] == 'LINE':
+		print(i['DetectedText'])
